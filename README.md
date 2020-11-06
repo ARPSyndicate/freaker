@@ -1,5 +1,10 @@
 # Freaker | Automated Vulnerability Testing & Exploitation Framework for Kenzer
 
+## Screenshots
+![freaker](screenshots/freaker0.png)
+![freaker](screenshots/freaker1.png)
+![freaker](screenshots/freaker2.png)
+
 ## Instructions for running
 1. Install requirements using `pip3 install -r requirements.txt`.<br>
 2. FreakerDB can be cloned using `git clone http://github.com/ARPSyndicate/freakerdb`.<br>
