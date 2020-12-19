@@ -6,7 +6,7 @@
 ![freaker](screenshots/freaker2.png)
 
 ## Instructions for running
-1. Install requirements using `pip3 install -r requirements.txt`.<br>
+1. Install requirements using `pip3 install -I -r requirements.txt`.<br>
 2. FreakerDB can be cloned using `git clone http://github.com/ARPSyndicate/freakerdb`.<br>
 3. Add all the configurations in `configs.yaml`<br>
 4. Run `python3 freaker.py`.<br>

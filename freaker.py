@@ -22,7 +22,7 @@ style = Style.from_dict({
 })
 session = PromptSession(history=FileHistory('.freaker_history'))
 
-print(BLUE + "Freaker[1.0] by ARPSyndicate" + CLEAR)
+print(BLUE + "Freaker[1.1] by ARPSyndicate" + CLEAR)
 print(YELLOW + "automated vulnerability testing & exploitation framework for kenzer" + CLEAR)
 
 try:
@@ -34,16 +34,18 @@ try:
         if(os.path.exists(workspace) == False):
             os.system("mkdir "+workspace)
         print(GREEN + "[*] configurations loaded successfully" + CLEAR)
-except:
+except Exception as exception:
     print(RED + "[!] invalid configurations" + CLEAR)
+    print(exception.__class__.__name__ + ": " + str(exception))
     sys.exit()
 
 try:
     with open(freakerdb+"freakerdb.yaml") as database:
         db = yaml.load(database, Loader=yaml.FullLoader)
         print(GREEN + "[*] freakerdb loaded successfully" + CLEAR)
-except:
+except Exception as exception:
     print(RED + "[!] freakerdb could not be loaded" + CLEAR)
+    print(exception.__class__.__name__ + ": " + str(exception))
     sys.exit()
 
 commands = ['list-exploits', 'list-commands', 'exploit-info', 'run-exploit']
@@ -66,15 +68,25 @@ def listexploits():
 def isinstalled(name):
     return which(name) is not None
 
-def getinputs(detect, output):
-    os.system("cat {0}*/*scan.kenz | grep -i '\[{1}\]'| cut -d ' ' -f 2 | sort -u | tee -a {2}".format(kenzerdb, detect, output))
+def getinputs(detection, output):
+    detect = detection.split('|')[1]
+    location = detection.split('|')[0]
+    if detection in ['portenum', 'webenum']:
+        os.system("cat {0}*/{3}.kenz | grep -i ':{1}'| sort -u | tee -a {2}".format(kenzerdb, detect, output, location))
+    elif detection in ['favscan']:
+        os.system("cat {0}*/{3}.kenz | grep -i $'\t{1}\t' | cut -d$'\t' -f 3 | sort -u | tee -a {2}".format(kenzerdb, detect, output, location))
+    else:
+        os.system("cat {0}*/{3}.kenz | grep -i '\[{1}\]'| cut -d ' ' -f 2 | sort -u | tee -a {2}".format(kenzerdb, detect, output, location))
 
 def filterinputs(inputs, output):
     list =[]
     with open(inputs) as f:
 	    targets=f.read().splitlines()
     for target in targets:
-        list.append("{0}://{1}".format(urlparse(target).scheme, urlparse(target).netloc))
+        if len(urlparse(target).scheme)>0:
+            list.append("{0}://{1}".format(urlparse(target).scheme, urlparse(target).netloc))
+        else:
+            list.append("{1}".format(urlparse(target).netloc))
     list.sort()
     with open(output, 'a') as f:
         f.writelines("%s\n" % line for line in list)
@@ -104,7 +116,7 @@ def exploitit(command):
     if run:
         emp = workspace+"{0}.freakem".format(command)
         inp = workspace+"{0}.freakin".format(command)
-        detections = db[command]['detections'].split(" ")
+        detections = db[command]['detections'].split("||")
         for detects in detections:
             getinputs(detects,emp)
         filterinputs(emp, inp)
@@ -147,5 +159,6 @@ try:
 except KeyboardInterrupt:
     print(RED + "[!] interrupted"+ CLEAR)
 
-except:
+except Exception as exception:
+    print(exception.__class__.__name__ + ": " + str(exception))
     print(RED + "[!] an exception occurred"+ CLEAR)
