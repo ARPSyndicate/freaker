@@ -71,7 +71,7 @@ def isinstalled(name):
 def getinputs(detection, output):
     detect = detection.split('|')[1]
     location = detection.split('|')[0]
-    if detection in ['portenum', 'webenum']:
+    if location in ['portenum', 'webenum']:
         os.system("cat {0}*/{3}.kenz | grep -i ':{1}'| sort -u | tee -a {2}".format(kenzerdb, detect, output, location))
     elif detection in ['favscan']:
         os.system("cat {0}*/{3}.kenz | grep -i $'\t{1}\t' | cut -d$'\t' -f 3 | sort -u | tee -a {2}".format(kenzerdb, detect, output, location))
@@ -86,7 +86,7 @@ def filterinputs(inputs, output):
         if len(urlparse(target).scheme)>0:
             list.append("{0}://{1}".format(urlparse(target).scheme, urlparse(target).netloc))
         else:
-            list.append("{1}".format(urlparse(target).netloc))
+            list.append("{0}".format(target))
     list.sort()
     with open(output, 'a') as f:
         f.writelines("%s\n" % line for line in list)
