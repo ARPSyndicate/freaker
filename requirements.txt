@@ -1,2 +1,2 @@
 pyyaml
-prompt_toolkit
+prompt-toolkit

@@ -1,4 +1,4 @@
-# Freaker | Automated Vulnerability Testing & Exploitation Framework for Kenzer
+# Freaker | Automated Application Fingerprinting, Vulnerability Testing & Exploitation Framework for Kenzer
 
 ## Screenshots
 ![freaker](screenshots/freaker0.png)
@@ -12,10 +12,10 @@
 4. Run `python3 freaker.py`.<br>
 
 ## Built-in Functionalities
->* `list-exploits` - returns all exploits
+>* `list-modules` - returns all modules
 >* `list-commands` - returns all commands
->* `exploit-info` - returns all information for an exploit
->* `run-exploit` - runs an exploit
+>* `module-info` - returns all info about module
+>* `run-module` - runs a module
 
 **COMPATIBILITY TESTED ON ARCHLINUX(x64) & DEBIAN(x64) ONLY**<br>
 **FEEL FREE TO SUBMIT PULL REQUESTS**

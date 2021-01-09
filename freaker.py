@@ -22,8 +22,8 @@ style = Style.from_dict({
 })
 session = PromptSession(history=FileHistory('.freaker_history'))
 
-print(BLUE + "Freaker[1.1] by ARPSyndicate" + CLEAR)
-print(YELLOW + "automated vulnerability testing & exploitation framework for kenzer" + CLEAR)
+print(BLUE + "Freaker[1.2] by ARPSyndicate" + CLEAR)
+print(YELLOW + "automated application fingerprinting, vulnerability testing, & exploitation framework for kenzer" + CLEAR)
 
 try:
     with open(CONFIG) as configs:
@@ -48,21 +48,21 @@ except Exception as exception:
     print(exception.__class__.__name__ + ": " + str(exception))
     sys.exit()
 
-commands = ['list-exploits', 'list-commands', 'exploit-info', 'run-exploit']
-exploits = db.keys()
+commands = ['list-modules', 'list-commands', 'module-info', 'run-module']
+modules = db.keys()
 
-print(GREEN + "[*] {0} exploits loaded successfully".format(len(exploits)) + CLEAR)
+print(GREEN + "[*] {0} modules loaded successfully".format(len(modules)) + CLEAR)
 
 def listcommands():
-    print("`{0}` - returns all exploits".format(commands[0]))
+    print("`{0}` - returns all modules".format(commands[0]))
     print("`{0}` - returns all commands".format(commands[1]))
-    print("`{0}` - returns all information for an exploit".format(commands[2]))
-    print("`{0}` - runs an exploit".format(commands[3]))
+    print("`{0}` - returns all info about modules".format(commands[2]))
+    print("`{0}` - runs a module".format(commands[3]))
     return
 
-def listexploits():
-    for exploit in exploits:
-        print(exploit)
+def listmodules():
+    for module in modules:
+        print(module)
     return
 
 def isinstalled(name):
@@ -92,18 +92,18 @@ def filterinputs(inputs, output):
         f.writelines("%s\n" % line for line in list)
     
 
-def exploitinfo():
+def moduleinfo():
     while(True):
-        autoc = WordCompleter(exploits)
-        command = session.prompt("freaker:~$ exploit-info: ",completer=autoc, style=style, complete_while_typing=True).lower()
-        if command in exploits:
+        autoc = WordCompleter(modules)
+        command = session.prompt("freaker:~$ module-info: ",completer=autoc, style=style, complete_while_typing=True).lower()
+        if command in modules:
             print("{1} description: {2} {0}".format(db[command]['info'], YELLOW, CLEAR))
             print("{1} requirements: {2} {0}".format(db[command]['requires'], YELLOW, CLEAR))
             print("{1} detections: {2} {0}".format(db[command]['detections'], YELLOW, CLEAR))
         elif command=="exit":
             return
         else:
-            print(RED + "[!] exploit not found" + CLEAR)
+            print(RED + "[!] module not found" + CLEAR)
 
 def exploitit(command):
     out = workspace+"{0}.freakout".format(command)
@@ -125,32 +125,32 @@ def exploitit(command):
         for target in targets:
             os.system("cd {0}{1} && python3 main.py '{2}' {3}".format(freakerdb, db[command]['path'], target, out))
 
-def runexploit():
+def runmodule():
     while(True):
-        autoc = WordCompleter(exploits)
-        command = session.prompt("freaker:~$ run-exploit: ",completer=autoc, style=style, complete_while_typing=True).lower()
-        if command in exploits:
+        autoc = WordCompleter(modules)
+        command = session.prompt("freaker:~$ run-module: ",completer=autoc, style=style, complete_while_typing=True).lower()
+        if command in modules:
             exploitit(command)
         elif command=="*":
-            for coms in exploits:
+            for coms in modules:
                 exploitit(coms)
         elif command=="exit":
             return
         else:
-            print(RED + "[!] exploit not found" + CLEAR)
+            print(RED + "[!] module not found" + CLEAR)
 
 try:
     while(True):
         autoc = WordCompleter(commands)
         command = session.prompt("freaker:~$ ",completer=autoc, style=style, complete_while_typing=True).lower()
         if command == commands[0]:
-            listexploits()
+            listmodules()
         elif command == commands[1]:
             listcommands()
         elif command == commands[2]:
-            exploitinfo()
+            moduleinfo()
         elif command == commands[3]:
-            runexploit()
+            runmodule()
         elif command == "exit":
             exit()
         else:
