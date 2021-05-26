@@ -76,7 +76,7 @@ def getinputs(detection, output):
     elif detection in ['favscan']:
         os.system("cat {0}*/{3}.kenz | grep -i $'\t{1}\t' | cut -d$'\t' -f 3 | sort -u | tee -a {2}".format(kenzerdb, detect, output, location))
     else:
-        os.system("cat {0}*/{3}.kenz | grep -i '\[{1}\]'| cut -d ' ' -f 2 | sort -u | tee -a {2}".format(kenzerdb, detect, output, location))
+        os.system("cat {0}*/{3}.kenz | grep -i '\[{1}\]'| cut -d ' ' -f 2- | sort -u | tee -a {2}".format(kenzerdb, detect, output, location))
 
 def filterinputs(inputs, output):
     list =[]
