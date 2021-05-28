@@ -101,6 +101,7 @@ def filterinputs(inputs, output):
         else:
             list.append("{0}".format(target))
     list.sort()
+    list = list(set(list))
     with open(output, 'a') as f:
         f.writelines("%s\n" % line for line in list)
 
